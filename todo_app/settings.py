@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import dj_database_url
 import environ
+import sys
 from pathlib import Path
 
 env = environ.Env()
@@ -79,13 +80,23 @@ WSGI_APPLICATION = 'todo_app.wsgi.application'
 
 DATABASE_URL = env('DATABASE_URL')
 
+# if 'test' in sys.argv:
+#     # Fallback to SQLite for test environments
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': BASE_DIR / 'db.sqlite3',
+#         }
+#     }
+# else:
+#     DATABASE_URL = env('DATABASE_URL')
+#     DATABASES = {
+#         'default': dj_database_url.parse(DATABASE_URL)
+#     }
+
 DATABASES = {
     'default': dj_database_url.parse(DATABASE_URL)
 }
-
-
-# PostgreSQL databs
-# DATABASES["default"] = dj_database_url.parse("postgresql://todo_django_render_40f2_user:pKIzPPcmgsRTUAyyAiHuz3Xq7UrOLGWn@dpg-ct5esdtds78s73bnfjc0-a.oregon-postgres.render.com/todo_django_render_40f2")
 
 
 # Password validation
