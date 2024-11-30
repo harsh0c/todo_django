@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        h1 {
+            color: #343a40;
+        }
+        .task-item {
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            background-color: #ffffff;
+            transition: box-shadow 0.3s;
+        }
+        .task-item:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .completed {
+            text-decoration: line-through;
+            color: #6c757d;
+        }
+        .btn-custom {
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">To-Do List</h1>
+        <div class="text-center mb-3">
+            <a href="{% url 'add_task' %}" class="btn btn-primary">Add New Task</a>
+            <a href="#" class="btn btn-danger" onclick="confirmDeleteAll()">Delete All Tasks</a>
+        </div>
+        <ul class="list-group">
+            {% for task in tasks %}
+            <li class="list-group-item task-item">
+                <span class="{% if task.completed %}completed{% endif %}">{{ task.title }}</span> - 
+                {% if task.completed %}<span class="text-success">Completed</span>{% else %}<span class="text-warning">Pending</span>{% endif %}
+                <div class="float-right">
+                    <a href="{% url 'edit_task' task.id %}" class="btn btn-warning btn-custom">Edit</a>
+                    <a href="{% url 'delete_task' task.id %}" class="btn btn-danger btn-custom">Delete</a>
+                </div>
+            </li>
+            {% empty %}
+            <li class="list-group-item">No tasks available.</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function confirmDeleteAll() {
+            if (confirm("Are you sure you want to delete all tasks? This action cannot be undone.")) {
+                window.location.href = "{% url 'delete_all_tasks' %}";
+            }
+        }
+    </script>
+</body>
+</html>
